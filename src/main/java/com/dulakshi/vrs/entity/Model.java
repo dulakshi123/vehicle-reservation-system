@@ -1,12 +1,9 @@
 package com.dulakshi.vrs.entity;
 
 public enum Model {
-    SEDAN(4),
-    HATCHBACK(3),
-    SUV(4),
-    MINIVAN(5),
-    VAN(8),
-    PREMIER(4);
+    ECONOMY(4),
+    COMFORT(4),
+    VAN(8);
 
     private final int passengerCount;
 
