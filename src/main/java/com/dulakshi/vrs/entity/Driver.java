@@ -15,9 +15,8 @@ import lombok.Setter;
 public class Driver {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "reg_id", nullable = false, unique = true, length = 20)
     private String registrationId;
