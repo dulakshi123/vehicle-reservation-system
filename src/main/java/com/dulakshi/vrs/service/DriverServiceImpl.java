@@ -3,6 +3,8 @@ package com.dulakshi.vrs.service;
 import com.dulakshi.vrs.dto.DriverDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DriverServiceImpl implements DriverService {
     @Override
@@ -11,12 +13,12 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public DriverDTO updateDriver(Long id, String name) {
-        return null;
+    public boolean updateDriverStatus(Long id, String status) {
+        return false;
     }
 
     @Override
-    public DriverDTO getAllDrivers() {
-        return null;
+    public List<DriverDTO> getAllDrivers() {
+        return List.of();
     }
 }
