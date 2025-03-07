@@ -10,4 +10,12 @@ public enum Status {
      */
     ACTIVE, INACTIVE, AVAILABLE, ON_TRIP, UNDER_MAINTENANCE,
     BOOKED, CHECKED_IN, PENDING, PAID;
+
+    public static Status getStatus(String status) {
+        try {
+            return Status.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new IllegalArgumentException("Invalid status: " + status);
+        }
+    }
 }
