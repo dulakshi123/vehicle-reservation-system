@@ -4,6 +4,7 @@ import com.dulakshi.vrs.dto.DriverDTO;
 import com.dulakshi.vrs.entity.Driver;
 import com.dulakshi.vrs.entity.Status;
 import com.dulakshi.vrs.repository.DriverRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class DriverServiceImpl implements DriverService {
     @Autowired
-    private DriverRepository driverRepository;
+    private final DriverRepository driverRepository;
 
     @Override
     public DriverDTO addDriver(DriverDTO driverDTO) {
