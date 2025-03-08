@@ -15,7 +15,10 @@ import lombok.Setter;
 public class Customer {
 
     @Id
-    @ManyToOne
+    private Long userId;
+
+    @OneToOne
+    @MapsId
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
