@@ -15,7 +15,6 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class VehicleServiceImpl implements VehicleService {
-    @Autowired
     private final VehicleRepository vehicleRepository;
 
     @Override

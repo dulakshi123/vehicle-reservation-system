@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class DriverServiceImpl implements DriverService {
-    @Autowired
     private final DriverRepository driverRepository;
 
     @Override
