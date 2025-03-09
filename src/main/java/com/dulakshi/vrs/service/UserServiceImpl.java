@@ -4,7 +4,6 @@ import com.dulakshi.vrs.dto.LoginRequestDTO;
 import com.dulakshi.vrs.entity.User;
 import com.dulakshi.vrs.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,7 +12,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User register(User user) {
@@ -23,7 +21,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User already exists");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
 
         return userRepository.save(user);
     }
@@ -34,7 +32,7 @@ public class UserServiceImpl implements UserService {
                 .findUserByEmail(loginRequest.getUsername())
                 .orElseThrow(() -> new RuntimeException("Username or password is incorrect"));
 
-        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        if(!loginRequest.getPassword().equalsIgnoreCase(user.getPassword())) {
             throw new RuntimeException("Username or password is incorrect");
         }
 
