@@ -6,10 +6,10 @@ public enum Status {
      * Driver: Available, On_Trip
      * Vehicle: Available, On_Trip, Under_Maintenance
      * Reservation: Booked, Checked_In
-     * Payment: Pending, Paid
+     * Payment: Pending, Paid, Cancelled
      */
     ACTIVE, INACTIVE, AVAILABLE, ON_TRIP, UNDER_MAINTENANCE,
-    BOOKED, CHECKED_IN, PENDING, PAID;
+    BOOKED, CHECKED_IN, PENDING, PAID, CANCELLED;
 
     public static Status getStatus(String status) {
         try {
