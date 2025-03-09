@@ -6,7 +6,6 @@ import com.dulakshi.vrs.entity.Status;
 import com.dulakshi.vrs.entity.Vehicle;
 import com.dulakshi.vrs.repository.VehicleRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,5 +61,10 @@ public class VehicleServiceImpl implements VehicleService {
             vehicleDTO.setSeatCount(vehicle.getSeatCount());
             return vehicleDTO;
         }).toList();
+    }
+
+    @Override
+    public Vehicle getVehicleById(Long vehicleId) {
+        return vehicleRepository.findById(vehicleId).orElse(null);
     }
 }

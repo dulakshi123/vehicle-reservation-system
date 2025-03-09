@@ -9,4 +9,5 @@ public interface DriverService {
     DriverDTO addDriver(DriverDTO driverDTO);
     boolean updateDriverStatus(Long id, String status);
     List<DriverDTO> getAllDrivers();
+    Driver getDriverById(Long id);
 }

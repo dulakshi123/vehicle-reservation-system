@@ -5,7 +5,6 @@ import com.dulakshi.vrs.entity.Driver;
 import com.dulakshi.vrs.entity.Status;
 import com.dulakshi.vrs.repository.DriverRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,5 +56,10 @@ public class DriverServiceImpl implements DriverService {
             driverDTO.setRegId(driver.getRegistrationId());
             return driverDTO;
         }).toList();
+    }
+
+    @Override
+    public Driver getDriverById(Long id) {
+        return driverRepository.findById(id).orElse(null);
     }
 }
