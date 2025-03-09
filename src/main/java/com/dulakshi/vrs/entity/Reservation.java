@@ -25,11 +25,11 @@ public class Reservation {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "driver_user_id", nullable = false)
+    @JoinColumn(name = "driver_user_id", nullable = true)
     private Driver driver;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_id", nullable = false)
+    @JoinColumn(name = "vehicle_id", nullable = true)
     private Vehicle vehicle;
 
     @Column(nullable = false, length = 100)
