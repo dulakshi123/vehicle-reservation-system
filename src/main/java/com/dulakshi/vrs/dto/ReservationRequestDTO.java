@@ -9,8 +9,10 @@ public class ReservationRequestDTO {
     private Long id;
     private String customer;
     private String customerMobile;
+    private Long driverId;
     private String driver;
     private String driverMobile;
+    private Long vehicleId;
     private String vehicle;
     private Integer seatCount;
     private String pickupLocation;
