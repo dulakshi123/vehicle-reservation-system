@@ -30,8 +30,8 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setName(customerDTO.getName());
         customer.setUser(registeredUser);
         customer.setMobile(customerDTO.getMobile());
-        customerDTO.setNic(customerDTO.getNic());
-        customer.setAddress(customer.getAddress());
+        customer.setNic(customerDTO.getNic());
+        customer.setAddress(customerDTO.getAddress());
         customer.setRegistrationId(generateRegistrationId());
 
         customerRepository.save(customer);
@@ -58,7 +58,6 @@ public class CustomerServiceImpl implements CustomerService {
             number++;
             registrationId = "CR-" + String.format("%05d", number);
         }
-
         return registrationId;
     }
 
