@@ -18,6 +18,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final PaymentService paymentService;
     private final CustomerRepository customerRepository;
+    private final DriverService driverService;
+    private final VehicleService vehicleService;
 
     @Override
     public boolean addReservation(ReservationRequestDTO reservationDTO, User user) {
@@ -47,12 +49,63 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public boolean updateReservation(ReservationRequestDTO reservationDTO) {
-        return false;
+        // Find related Reservation
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationDTO.getId());
+
+        if(optionalReservation.isEmpty()) {
+            throw new RuntimeException("Reservation not found");
+        }
+
+        Reservation theReservation = optionalReservation.get();
+
+        // Find relevant Driver and Vehicle
+        Driver driver = driverService.getDriverById(reservationDTO.getDriverId());
+        Vehicle vehicle = vehicleService.getVehicleById(reservationDTO.getVehicleId());
+
+        if(driver == null || vehicle == null) {
+            throw new RuntimeException("Driver or Vehicle not found");
+        }
+
+        // Update Reservation
+        theReservation.setDriver(driver);
+        theReservation.setVehicle(vehicle);
+        theReservation.setStatus(Status.valueOf(reservationDTO.getStatus()));
+        reservationRepository.save(theReservation);
+
+        // Find relevant Payment
+        Payment payment = paymentService.getPaymentByReservation(reservationDTO.getId());
+
+        if(payment == null) { // Add Payment if isn't exist
+            payment = new Payment();
+            payment.setFare(reservationDTO.getFareAmount());
+            payment.setTax(reservationDTO.getTaxAmount());
+            payment.setDiscount(reservationDTO.getDiscount());
+            payment.setStatus(Status.PENDING);
+            payment.setReservation(theReservation);
+        } else { // Update Payment if already exists
+            payment.setFare(reservationDTO.getFareAmount());
+            payment.setTax(reservationDTO.getTaxAmount());
+            payment.setDiscount(reservationDTO.getDiscount());
+            payment.setStatus(Status.getStatus(reservationDTO.getPaymentStatus()));
+        }
+
+        paymentService.updatePayment(payment);
+
+        return true;
     }
 
     @Override
     public boolean requestCancellation(Long reservationId) {
-        return false;
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
+
+        if(optionalReservation.isEmpty()) {
+            throw new RuntimeException("Reservation not found");
+        }
+
+        Reservation theReservation = optionalReservation.get();
+        theReservation.setStatus(Status.CANCELLED);
+        reservationRepository.save(theReservation);
+        return true;
     }
 
     @Override
@@ -73,10 +126,13 @@ public class ReservationServiceImpl implements ReservationService {
     public List<ReservationRequestDTO> getAllReservation() {
         return reservationRepository.findAll().stream().map(reservation -> {
             Customer thisCustomer = reservation.getCustomer();
+            Driver thisDriver = reservation.getDriver();
             Vehicle thisVehicle = reservation.getVehicle();
             Payment thisPayment = paymentService.getPaymentByReservation(reservation.getId());
 
             return getReservationRequestDTOBuilder(reservation, thisCustomer)
+                    .driverId(Optional.ofNullable(thisDriver).map(Driver::getId).orElse(-1L))
+                    .vehicleId(Optional.ofNullable(thisVehicle).map(Vehicle::getId).orElse(-1L))
                     .seatCount(Optional.ofNullable(thisVehicle).map(Vehicle::getSeatCount).orElse(0))
                     .status(reservation.getStatus().name())
                     .paymentStatus(Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING).name())
