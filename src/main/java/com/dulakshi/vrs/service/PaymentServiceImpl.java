@@ -11,17 +11,12 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Override
-    public Payment createPayment(Payment payment) {
-        return null;
-    }
-
-    @Override
     public Payment getPaymentByReservation(Long reservationId) {
         return paymentRepository.findPaymentByReservation_Id(reservationId).orElse(null);
     }
 
     @Override
-    public boolean updatePayment(Payment payment) {
-        return false;
+    public void updatePayment(Payment payment) {
+        paymentRepository.save(payment);
     }
 }
