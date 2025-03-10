@@ -11,5 +11,9 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Optional<Reservation> findReservationByCustomerAndDatetime(Customer customer, LocalDateTime dateTime);
 
-    List<Reservation> findReservationsByCustomer(Customer customer);
+    List<Reservation> findReservationByCustomerOrderByDatetimeDesc(Customer customer);
+
+    List<Reservation> findReservationByOrderByDatetimeDesc();
+
+    long countAllBy();
 }
