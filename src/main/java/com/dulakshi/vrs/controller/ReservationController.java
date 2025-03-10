@@ -17,7 +17,7 @@ import java.util.List;
 public class ReservationController {
     private final ReservationService reservationService;
 
-    @PostMapping("/admin/add")
+    @PostMapping("/customer/add")
     public ResponseEntity<String> addReservation(@RequestBody ReservationRequestDTO reservationDTO, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("_user_");
@@ -65,7 +65,7 @@ public class ReservationController {
     }
 
     @GetMapping("/customer/get")
-    public ResponseEntity<List<ReservationRequestDTO>> getReservations(@RequestParam Long reservationId, HttpServletRequest request) {
+    public ResponseEntity<List<ReservationRequestDTO>> getReservations(HttpServletRequest request) {
         List<ReservationRequestDTO> reservationList = null;
         try {
             User user = (User) request.getSession().getAttribute("_user_");

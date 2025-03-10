@@ -113,29 +113,29 @@ public class ReservationServiceImpl implements ReservationService {
         Customer customer = customerRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return reservationRepository.findReservationsByCustomer(customer).stream().map(reservation -> {
+        return reservationRepository.findReservationByCustomerOrderByDatetimeDesc(customer)
+                .stream().map(reservation -> {
             Payment thisPayment = paymentService.getPaymentByReservation(reservation.getId());
 
             return getReservationRequestDTOBuilder(reservation, customer)
-                    .status(getRealStatus(Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING)))
+                    .status(getRealStatus(reservation.getStatus(), Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING)))
                     .build();
         }).toList();
     }
 
     @Override
     public List<ReservationRequestDTO> getAllReservation() {
-        return reservationRepository.findAll().stream().map(reservation -> {
+        return reservationRepository.findReservationByOrderByDatetimeDesc()
+                .stream().map(reservation -> {
             Customer thisCustomer = reservation.getCustomer();
             Driver thisDriver = reservation.getDriver();
             Vehicle thisVehicle = reservation.getVehicle();
-            Payment thisPayment = paymentService.getPaymentByReservation(reservation.getId());
 
             return getReservationRequestDTOBuilder(reservation, thisCustomer)
                     .driverId(Optional.ofNullable(thisDriver).map(Driver::getId).orElse(-1L))
                     .vehicleId(Optional.ofNullable(thisVehicle).map(Vehicle::getId).orElse(-1L))
                     .seatCount(Optional.ofNullable(thisVehicle).map(Vehicle::getSeatCount).orElse(0))
                     .status(reservation.getStatus().name())
-                    .paymentStatus(Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING).name())
                     .build();
         }).toList();
     }
@@ -150,8 +150,14 @@ public class ReservationServiceImpl implements ReservationService {
         return datetime.format(formatter);
     }
 
-    private String getRealStatus(Status paymentStatus) {
-        return paymentStatus.equals(Status.PAID) ? "Completed" : "Pending";
+    private String getRealStatus(Status status, Status paymentStatus) {
+        if(status.equals(Status.CANCELLED)) {
+            return "Canceled";
+        } else if(paymentStatus.equals(Status.PAID)) {
+            return "Completed";
+        } else {
+            return "Pending";
+        }
     }
 
     private ReservationRequestDTO.ReservationRequestDTOBuilder
@@ -180,6 +186,7 @@ public class ReservationServiceImpl implements ReservationService {
                         .map(payment -> {
                             return payment.getFare() + payment.getTax() - payment.getDiscount();
                         }).orElse(0.0))
-                .status(getRealStatus(Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING)));
+                .status(getRealStatus(reservation.getStatus(), Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING)))
+                .paymentStatus(Optional.ofNullable(thisPayment).map(Payment::getStatus).orElse(Status.PENDING).name());
     }
 }
