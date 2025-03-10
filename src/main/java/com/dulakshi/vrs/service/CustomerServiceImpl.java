@@ -74,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private CustomerDTO getCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setId(customerDTO.getId());
+        customerDTO.setId(customer.getUserId());
         customerDTO.setRegId(customer.getRegistrationId());
         customerDTO.setName(customer.getName());
         customerDTO.setMobile(customer.getMobile());
