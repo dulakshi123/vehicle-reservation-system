@@ -15,12 +15,12 @@ public class DriverController {
     private final DriverService driverService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<DriverDTO>> getAllVehicles() {
+    public ResponseEntity<List<DriverDTO>> getAllDrivers() {
         return ResponseEntity.ok(driverService.getAllDrivers());
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateVehicle(@RequestParam Long id, @RequestParam String status) {
+    public ResponseEntity<String> updateDriver(@RequestParam Long id, @RequestParam String status) {
         boolean isSuccess = driverService.updateDriverStatus(id, status);
 
         if(isSuccess) {
@@ -31,13 +31,13 @@ public class DriverController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addVehicle(@RequestBody DriverDTO driverDTO) {
+    public ResponseEntity<String> addDriver(@RequestBody DriverDTO driverDTO) {
         DriverDTO addedDriver = driverService.addDriver(driverDTO);
 
         if(addedDriver == null) {
             return ResponseEntity.badRequest().body("Something went wrong");
         } else {
-            return ResponseEntity.ok(addedDriver);
+            return ResponseEntity.ok("Successfully added new driver");
         }
     }
 }
