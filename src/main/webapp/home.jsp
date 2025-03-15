@@ -330,7 +330,7 @@
 
 <div class="container">
     <section class="welcome-section">
-        <h1>Welcome back, John!</h1>
+        <h1>Welcome to Mega City Cabs</h1>
         <p>Need a ride? Book a cab instantly or schedule for later. Our cabs are available 24/7 across Colombo City.</p>
         <button onclick="redirectToBooking()" class="btn btn-primary btn-large">Book a Cab Now</button>
     </section>
