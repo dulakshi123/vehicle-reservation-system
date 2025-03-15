@@ -1227,9 +1227,6 @@
         });
     }
 
-    // Adding event listener for the update button
-    document.querySelector('#editModal .btn-success').addEventListener('click', updateReservation);
-
     // Table sorting functionality
     document.querySelectorAll('#reservations-table th[data-sort]').forEach(th => {
         th.addEventListener('click', function () {
