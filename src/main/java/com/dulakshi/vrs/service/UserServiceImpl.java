@@ -2,6 +2,7 @@ package com.dulakshi.vrs.service;
 
 import com.dulakshi.vrs.dto.LoginRequestDTO;
 import com.dulakshi.vrs.entity.User;
+import com.dulakshi.vrs.entity.UserRole;
 import com.dulakshi.vrs.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class UserServiceImpl implements UserService {
 
         if(!loginRequest.getPassword().equalsIgnoreCase(user.getPassword())) {
             throw new RuntimeException("Username or password is incorrect");
+        }
+
+        if(!user.getUserRole().equals(UserRole.ADMIN)) {
+            throw new RuntimeException("Only admin users are allowed");
         }
 
         return user;

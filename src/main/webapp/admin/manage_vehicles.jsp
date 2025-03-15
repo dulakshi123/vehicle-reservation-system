@@ -1,10 +1,11 @@
 <%@ page import="com.dulakshi.vrs.entity.User" %>
+<%@ page import="com.dulakshi.vrs.entity.UserRole" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     User user = (User) session.getAttribute("_user_");
 
-    if (user == null) {
+    if (user == null || !user.getUserRole().equals(UserRole.ADMIN)) {
         response.sendRedirect("login.jsp");
     }
 %>
